@@ -1,12 +1,20 @@
 // deno.landに公開されているモジュールをimport
 import { serveDir } from "https://deno.land/std@0.223.0/http/file_server.ts";
 
+// save the previous word
+let previousWord = "しりとり";
+
 // localhostにDenoのHTTPサーバを展開
 Deno.serve(async (request) => {
 
     // get path name
     const pathname = new URL(request.url).pathname;
     console.log(`pathname: ${pathname}`);
+
+    // Get /shiritori return prev word
+    if (request.method === "GET" && pathname === "/shiritori") {
+        return new Response(previousWord);
+    }
 
     // ./public以下のファイルを公開
     return serveDir(
