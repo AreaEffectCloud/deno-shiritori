@@ -7,7 +7,7 @@ let previousWord = "しりとり";
 // localhostにDenoのHTTPサーバを展開
 Deno.serve(async (request) => {
 
-    // get path nameアラブ首長国連邦
+    // get path name
     const pathname = new URL(request.url).pathname;
     console.log(`pathname: ${pathname}`);
 
@@ -26,6 +26,20 @@ Deno.serve(async (request) => {
         if (previousWord.slice(-1) === nextWord.slice(0, 1)) {
             // 同一であれば、previousWordを更新
             previousWord = nextWord;
+        }
+
+        // 同一でない単語の入力時にエラーを返す
+        else {
+            return new Response(
+                JSON.stringify({
+                    "errorMessage": "前の単語に続いていません",
+                    "errorCode": "10001"
+                }),
+                {
+                    status: 400,
+                    headers: { "Content-Type": "application/json; charset=utf-8" }
+                }
+            );
         }
 
         return new Response(previousWord);
