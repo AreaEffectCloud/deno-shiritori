@@ -1,32 +1,26 @@
-// localhostにDenoのHTTPサーバを展開
+// deno.landに公開されているモジュールをimport
+import { serveDir } from "https://deno.land/std@0.223.0/http/file_server.ts";
 
+// localhostにDenoのHTTPサーバを展開
 Deno.serve(async (request) => {
 
     // get path name
     const pathname = new URL(request.url).pathname;
     console.log(`pathname: ${pathname}`);
 
-    // return ".public/style.css"
-    if (pathname === "/style.css") {
-        const cssText = await Deno.readTextFile("./public/style.css");
-        return new Response(
-            cssText,
-            {
-                headers: {
-                    "Content-Type": "text/css; charset=utf-8"
-                }
-            }
-        );
-    }
-
-    // return index.html
-    const htmlText = await Deno.readTextFile("./public/index.html");
-    return new Response(
-        htmlText,
+    // ./public以下のファイルを公開
+    return serveDir(
+        request,
         {
-            headers: {
-                "content-Type": "text/html; charset=utf-8"
-            }
+            /* 
+            - fsRoot: 公開するファルダを指定
+            - urlRoot: フォルダを展開するURLを指定。今回はlocalhost:8000/に直に展開する
+            - enableCors: CORSの設定を付加するか
+            */
+           fsRoot: "./public/",
+           urlRoot: "",
+           enableCors: true,
         }
     );
+
 });
