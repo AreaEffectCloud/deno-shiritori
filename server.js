@@ -15,6 +15,21 @@ Deno.serve(async (request) => {
     if (request.method === "GET" && pathname === "/shiritori") {
         return new Response(previousWord);
     }
+    // Post /shiritori: input the next word
+    if (request.method === "POST" && pathname === "/shiritori") {
+        // リクエストのペイロードを取得
+        const requestJson = await request.json();
+        // JSONの中からnextWordを取得
+        const nextWord = requestJson["nextWord"];
+
+        // previousWordの末尾とnextWordの先頭が同一か確認
+        if (previousWord.slice(-1) === nextWord.slice(0, 1)) {
+            // 同一であれば、previousWordを更新
+            previousWord = nextWord;
+        }
+
+        return new Response(previousWord);
+    }
 
     // ./public以下のファイルを公開
     return serveDir(
