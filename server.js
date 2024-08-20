@@ -7,7 +7,7 @@ let previousWord = "しりとり";
 // localhostにDenoのHTTPサーバを展開
 Deno.serve(async (request) => {
 
-    // get path name
+    // get path nameアラブ首長国連邦
     const pathname = new URL(request.url).pathname;
     console.log(`pathname: ${pathname}`);
 
