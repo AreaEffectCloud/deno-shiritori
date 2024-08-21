@@ -28,7 +28,7 @@ Deno.serve(async (request) => {
             if (nextWord.slice(-1) === "ん") {
                 return new Response(
                     JSON.stringify({
-                        "errorMessage": "末尾に \"ん\" がついてしまいました。",
+                        "errorMessage": "末尾に \"ん\" がついています",
                         "errorCode": "10002"
                     }),
                     {
@@ -41,7 +41,6 @@ Deno.serve(async (request) => {
             // 同一であれば、previousWordを更新
             previousWord = nextWord;
         }
-
         // 同一でない単語の入力時にエラーを返す
         else {
             return new Response(

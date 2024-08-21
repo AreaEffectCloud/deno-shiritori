@@ -62,7 +62,13 @@
             if (response.status !== 200) {
                 const errorJson = await response.text();
                 const errorObj = JSON.parse(errorJson);
-                alert(errorObj["errorMessage"]);
+                switch(errorObj["errorCode"]) {
+                    case 10002:
+                    case 10003:
+                        // end the game
+                    default:
+                        alert(errorObj["errorMessage"]);
+                }
             }
 
             const previousWord = await response.text();
