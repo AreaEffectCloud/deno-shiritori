@@ -24,6 +24,20 @@ Deno.serve(async (request) => {
 
         // previousWordの末尾とnextWordの先頭が同一か確認
         if (previousWord.slice(-1) === nextWord.slice(0, 1)) {
+
+            if (nextWord.slice(-1) === "ん") {
+                return new Response(
+                    JSON.stringify({
+                        "errorMessage": "末尾に \"ん\" がついてしまいました。",
+                        "errorCode": "10002"
+                    }),
+                    {
+                        status: 400,
+                        headers: { "Content-Type": "application/json; charset:utf-8" }
+                    }
+                )
+            };
+
             // 同一であれば、previousWordを更新
             previousWord = nextWord;
         }
@@ -49,7 +63,7 @@ Deno.serve(async (request) => {
     return serveDir(
         request,
         {
-            /* 
+            /*
             - fsRoot: 公開するファルダを指定
             - urlRoot: フォルダを展開するURLを指定。今回はlocalhost:8000/に直に展開する
             - enableCors: CORSの設定を付加するか
